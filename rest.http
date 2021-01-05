@@ -1,0 +1,200 @@
+# -*- mode:restclinet -*-
+#
+:base_route = http://localhost:8000/api
+#
+#
+:auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InpheWFuIiwiaWF0IjoxNjA0NTAyOTI1LCJleHAiOjE2MDQ1ODkzMjV9.wG3s5CDN6F-xBewTQu55HqbO63gsPdvBWAPgp2OmLII
+
+#
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Auth Routes
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# Register
+POST :base_route/auth/register
+content-type: application/json
+
+{
+    "name": "Test user",
+    "username": "test",
+    "email": "test@email.com",
+    "password": "Hello123"
+}
+
+# login
+POST :base_route/auth/login
+content-type: application/json
+
+{
+    "email": "zayan@email.com",
+    "password": "Hello123"
+}
+
+
+# Get Current Auth User
+GET :base_route/auth/me
+Authorization: :auth
+
+content-type: application/json
+
+#
+# Verify email
+PATCH :base_route/auth/verify?token=f9835ae8-314e-4c6b-bdb0-827d546a6605
+Authorization: :auth
+content-type: application/json
+
+#
+# Forgot password
+POST :base_route/auth/forgot-password
+content-type: application/json
+
+{
+    "email": "zayan@email.com"
+}
+
+##
+# Reset password
+PATCH :base_route/auth/reset-password?token=fa514fb2-a77a-4eae-9f08-6da03141dd28
+Authorization: :auth
+content-type: application/json
+
+{
+    "password": "Hello123"
+}
+
+#
+#
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Users Routes
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# Gett All Users
+GET :base_route/users
+
+# Get user by id
+GET :base_route/users/77aed1ba-8342-4911-8a23-695f586a8f1f
+
+# Get user profile by username/email
+GET :base_route/users/profile/nusu
+
+###
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Profile Routes
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Get all profiles
+GET :base_route/profile
+
+# Get profile by id
+GET :base_route/profile/e91407c7-b2af-4610-bc42-07b7b2d6a9b5
+
+
+# Get profile by username
+GET :base_route/profile/user/nusu
+
+
+# create profile
+POST :base_route/profile
+Authorization: :auth
+content-type: application/json
+
+{
+    "bio": "Hello world!"
+}
+
+# update profile
+PATCH :base_route/profile/e91407c7-b2af-4610-bc42-07b7b2d6a9b5
+Authorization: :auth
+content-type: application/json
+
+{
+    "bio": "Hi, this is Nusayra from Chittagong, Bangladesh. I love dancing!"
+}
+
+
+# follow a user's profile
+POST :base_route/profile/e91407c7-b2af-4610-bc42-07b7b2d6a9b5/follow
+Authorization: :auth
+content-type: application/json
+
+#
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Post Routes
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Get all posts
+GET :base_route/posts
+
+# Get posts with query
+GET :base_route/posts?favorited=zayan
+
+# Get all posts of an author
+GET :base_route/posts/author/zayan
+Authorization: :auth
+
+# Get post by slug
+GET :base_route/posts/post-by-zayan-pnbco9
+Authorization: :auth
+
+# create post
+POST :base_route/posts
+Authorization: :auth
+content-type: application/json
+
+{
+    "title": "Slug generation problem",
+    "description": "slug slug",
+    "body": "Hea aoda ojadk pokssu pandna. aodijn adojoa"
+}
+
+
+# update a post
+PUT :base_route/posts/slug-generation-problem-e77g59
+Authorization: :auth
+content-type: application/json
+
+{
+    "title": "Slug generation problem"
+}
+
+# delete a post
+DELETE :base_route/posts/post-by-zayan-pnbco9
+Authorization: :auth
+
+
+# favorite a post
+POST :base_route/posts/slug-generation-problem-e77g59/favorite
+Authorization: :auth
+
+
+# unfavorite a post
+DELETE :base_route/posts/slug-generation-problem-e77g59/favorite
+Authorization: :auth
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Post Routes
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+# get comments of a post by slug
+GET :base_route/posts/post-by-zayan-pnbco9/comments
+
+# create comment on a post
+POST :base_route/posts/post-by-zayan-pnbco9/comments
+Authorization: :auth
+content-type: application/json
+
+{
+    "body": "delete this too"
+}
+
+# get a commnet by id
+GET :base_route/comments/294852ef-a806-4376-b467-d0bd44f088ab
+
+
+# delete a comment
+DELETE :base_route/posts/post-by-zayan-pnbco9/comments/d4cb07dd-1abd-47a7-9592-51d3b1d7a88d
+Authorization: :auth
